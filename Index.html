@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta name="theme-color" content="#1B5E20">
+<title>DISTRIBUSI MBG</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsqr/dist/jsQR.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+:root{--green:#2E7D32;--gl:#43A047;--gd:#1B5E20;--gb:#E8F5E9;--blue:#1565C0;--bll:#1976D2;--blb:#E3F2FD;--org:#E65100;--orl:#F57C00;--orb:#FFF3E0;--red:#C62828;--rl:#E53935;--rb:#FFEBEE;--bg:#F0F4F0;--card:#fff;--tx:#1A2E1A;--txm:#6B7C6B;--bdr:#D4E8D4;--sh:0 2px 12px rgba(46,125,50,.1);--sh2:0 6px 24px rgba(46,125,50,.15);--r:14px;--rs:8px;--fn:'Nunito',sans-serif}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{font-family:var(--fn);background:var(--bg);color:var(--tx);min-height:100vh;max-width:430px;margin:0 auto;overflow-x:hidden}
+.page{display:none;flex-direction:column;min-height:100vh;padding-bottom:80px;animation:fi .2s ease}
+.page.active{display:flex}
+@keyframes fi{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
+.hdr{background:linear-gradient(135deg,var(--gd),var(--green));color:#fff;padding:16px 20px 18px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.15)}
+.hdr-top{display:flex;align-items:center;gap:10px}
+.hdr-ic{font-size:26px}
+.hdr-t{font-size:20px;font-weight:900;letter-spacing:.5px}
+.hdr-s{font-size:11px;opacity:.8;margin-top:1px}
+.hdr-bk{background:rgba(255,255,255,.2);border:none;color:#fff;width:36px;height:36px;border-radius:50%;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;margin-right:4px}
+.live{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.15);border-radius:20px;padding:4px 10px;font-size:11px;font-weight:700;margin-top:8px}
+.ldot{width:7px;height:7px;border-radius:50%;background:#69F0AE;animation:pl 1.4s infinite}
+@keyframes pl{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
+.cnt{padding:16px;flex:1}
+.sgr{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.sc{background:var(--card);border-radius:var(--r);padding:14px;box-shadow:var(--sh);display:flex;align-items:center;gap:12px;transition:transform .15s}
+.sc:active{transform:scale(.97)}
+.sic{font-size:28px;width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sn{font-size:22px;font-weight:900;line-height:1}
+.sl{font-size:11px;color:var(--txm);font-weight:600;margin-top:2px}
+.sc.bl .sic{background:var(--blb)}.sc.bl .sn{color:var(--blue)}
+.sc.gn .sic{background:var(--gb)}.sc.gn .sn{color:var(--green)}
+.sc.or .sic{background:var(--orb)}.sc.or .sn{color:var(--org)}
+.sc.rd .sic{background:var(--rb)}.sc.rd .sn{color:var(--red)}
+.mg{display:flex;flex-direction:column;gap:10px}
+.mb{display:flex;align-items:center;gap:14px;padding:16px 18px;border:none;border-radius:var(--r);color:#fff;font-family:var(--fn);cursor:pointer;box-shadow:var(--sh2);transition:transform .15s;text-align:left}
+.mb:active{transform:scale(.97)}
+.mb.gn{background:linear-gradient(135deg,var(--green),var(--gl))}
+.mb.bl{background:linear-gradient(135deg,var(--blue),var(--bll))}
+.mb.or{background:linear-gradient(135deg,var(--org),var(--orl))}
+.bic{font-size:26px;width:46px;height:46px;background:rgba(255,255,255,.2);border-radius:10px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.bt{font-size:15px;font-weight:800}
+.bs{font-size:11px;opacity:.8;font-weight:600;margin-top:1px}
+.ba{font-size:18px;opacity:.7;margin-left:auto}
+.stl{font-size:13px;font-weight:800;color:var(--txm);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px;margin-top:4px}
+.bnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:#fff;border-top:1px solid var(--bdr);display:flex;box-shadow:0 -4px 16px rgba(0,0,0,.08);z-index:200}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 4px 8px;cursor:pointer;border:none;background:none;font-family:var(--fn);color:var(--txm);font-size:10px;font-weight:700;gap:3px;transition:color .2s}
+.nic{font-size:22px;transition:transform .2s}
+.ni.act{color:var(--green)}.ni.act .nic{transform:scale(1.15)}
+.tgl{display:flex;background:var(--bg);border-radius:var(--r);padding:4px;margin-bottom:16px}
+.tb{flex:1;padding:10px;border:none;border-radius:10px;font-family:var(--fn);font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;background:transparent;color:var(--txm)}
+.tb.ag{background:var(--green);color:#fff;box-shadow:var(--sh)}
+.tb.ab{background:var(--blue);color:#fff;box-shadow:var(--sh)}
+.sbx{background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);margin-bottom:14px}
+.spv{position:relative;background:#0a0a0a;aspect-ratio:1;display:flex;align-items:center;justify-content:center}
+#sv{width:100%;height:100%;object-fit:cover}
+#sc{display:none}
+.sol{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;pointer-events:none}
+.sfr{width:200px;height:200px;position:relative}
+.sfr::before,.sfr::after,.sfr span::before,.sfr span::after{content:'';position:absolute;width:28px;height:28px;border-color:#69F0AE;border-style:solid}
+.sfr::before{top:0;left:0;border-width:3px 0 0 3px}
+.sfr::after{top:0;right:0;border-width:3px 3px 0 0}
+.sfr span::before{bottom:0;left:0;border-width:0 0 3px 3px}
+.sfr span::after{bottom:0;right:0;border-width:0 3px 3px 0}
+.sln{position:absolute;left:10px;right:10px;height:2px;background:linear-gradient(90deg,transparent,#69F0AE,transparent);animation:sm 2s linear infinite;top:10px}
+@keyframes sm{0%{top:10px}100%{top:180px}}
+.sid{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;padding:30px;color:#666}
+.sii{font-size:52px}
+.sid p{font-size:13px;text-align:center;font-weight:600;color:#999}
+.ca{padding:12px;display:flex;flex-direction:column;gap:8px}
+.ms{background:var(--card);border-radius:var(--r);padding:14px;box-shadow:var(--sh);margin-bottom:14px}
+.ml{font-size:12px;font-weight:800;color:var(--txm);margin-bottom:8px;text-transform:uppercase;letter-spacing:.5px}
+.mr{display:flex;gap:8px}
+.mi{flex:1;padding:11px 14px;border:2px solid var(--bdr);border-radius:var(--rs);font-family:var(--fn);font-size:14px;font-weight:700;outline:none;transition:border .2s;text-transform:uppercase}
+.mi:focus{border-color:var(--green)}
+.sr{background:var(--card);border-radius:var(--r);padding:16px;box-shadow:var(--sh);margin-bottom:14px;display:none;border-left:4px solid var(--green);animation:fi .3s ease}
+.sr.show{display:block}
+.rh{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.rk{font-size:18px;font-weight:900}
+.rbg{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:800}
+.rbg.gn{background:var(--gb);color:var(--green)}.rbg.rd{background:var(--rb);color:var(--red)}
+.ri{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.rii{background:var(--bg);border-radius:var(--rs);padding:8px 10px}
+.ril{font-size:10px;color:var(--txm);font-weight:700;text-transform:uppercase}
+.riv{font-size:14px;font-weight:800;margin-top:2px}
+.rcs{background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh)}
+.rch{padding:12px 14px;border-bottom:1px solid var(--bdr);font-size:12px;font-weight:800;color:var(--txm);text-transform:uppercase;letter-spacing:.5px}
+.sli{display:flex;align-items:center;gap:10px;padding:10px 14px;border-bottom:1px solid var(--bdr)}
+.sli:last-child{border-bottom:none}
+.ld{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.ld.gn{background:var(--green)}.ld.bl{background:var(--blue)}
+.lif{flex:1}
+.lk{font-size:13px;font-weight:800}
+.lm{font-size:11px;color:var(--txm);font-weight:600}
+.lt{font-size:11px;color:var(--txm);font-weight:600}
+.sb{display:flex;align-items:center;gap:8px;background:var(--card);border:2px solid var(--bdr);border-radius:var(--r);padding:10px 14px;margin-bottom:14px;transition:border .2s}
+.sb:focus-within{border-color:var(--green)}
+.sb input{flex:1;border:none;outline:none;font-family:var(--fn);font-size:14px;font-weight:600;background:transparent}
+.kc{background:var(--card);border-radius:var(--r);box-shadow:var(--sh);margin-bottom:12px;overflow:hidden;border-left:4px solid var(--green)}
+.kct{padding:14px 14px 10px}
+.kch{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
+.kn{font-size:17px;font-weight:900}
+.ks{font-size:12px;color:var(--txm);font-weight:700;margin-top:1px}
+.kqr{width:60px;height:60px;flex-shrink:0}
+.kqr canvas,.kqr img{width:60px!important;height:60px!important}
+.pr{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.pb{flex:1;height:8px;background:var(--bg);border-radius:4px;overflow:hidden}
+.pf{height:100%;background:linear-gradient(90deg,var(--green),var(--gl));border-radius:4px;transition:width .5s ease}
+.pp{font-size:12px;font-weight:800;color:var(--green);width:36px;text-align:right}
+.kss{display:flex;gap:8px}
+.kst{flex:1;text-align:center;background:var(--bg);border-radius:var(--rs);padding:6px 4px}
+.ksn{font-size:15px;font-weight:900}
+.ksl{font-size:10px;font-weight:700;color:var(--txm)}
+.kst.gn .ksn{color:var(--green)}.kst.or .ksn{color:var(--org)}.kst.rd .ksn{color:var(--red)}
+
+/* Updated action buttons - now 4 columns to fit new PDF button */
+.kca{display:flex;gap:1px;border-top:1px solid var(--bdr)}
+.kab{flex:1;padding:9px 4px;border:none;background:#fff;font-family:var(--fn);font-size:11px;font-weight:800;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center;gap:3px;white-space:nowrap}
+.kab:active{background:var(--bg)}
+.kab.pr2{color:var(--green);border-right:1px solid var(--bdr)}
+.kab.sv{color:var(--red);border-right:1px solid var(--bdr)}
+.kab.ed{color:var(--blue);border-right:1px solid var(--bdr)}
+.kab.rs{color:var(--org);border-right:1px solid var(--bdr)}
+.kab.dl{color:var(--red)}
+
+/* PDF loading spinner on button */
+.kab.loading{opacity:.6;pointer-events:none}
+.kab.loading::after{content:'⟳';display:inline-block;animation:spin .6s linear infinite;margin-left:2px}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+.fab{position:fixed;bottom:90px;right:20px;width:54px;height:54px;background:linear-gradient(135deg,var(--green),var(--gl));color:#fff;border:none;border-radius:50%;font-size:24px;box-shadow:0 4px 16px rgba(46,125,50,.4);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform .15s;z-index:150}
+.fab:active{transform:scale(.93)}
+.dpr{display:flex;gap:8px;margin-bottom:14px}
+.di{flex:1;padding:10px 14px;border:2px solid var(--bdr);border-radius:var(--r);font-family:var(--fn);font-size:14px;font-weight:700;outline:none;transition:border .2s;background:var(--card)}
+.di:focus{border-color:var(--green)}
+.chr{display:flex;gap:8px;margin-bottom:14px;overflow-x:auto;padding-bottom:2px}
+.chr::-webkit-scrollbar{display:none}
+.ch{flex-shrink:0;display:flex;flex-direction:column;align-items:center;padding:10px 14px;border-radius:var(--r);background:var(--card);box-shadow:var(--sh);min-width:80px}
+.chn{font-size:20px;font-weight:900}
+.chl{font-size:10px;font-weight:700;color:var(--txm);margin-top:1px}
+.ch.bl .chn{color:var(--blue)}.ch.gn .chn{color:var(--green)}.ch.or .chn{color:var(--org)}.ch.rd .chn{color:var(--red)}
+.cc{background:var(--card);border-radius:var(--r);padding:14px;box-shadow:var(--sh);margin-bottom:14px}
+.cl{display:flex;gap:14px;margin-bottom:10px}
+.cli{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:700;color:var(--txm)}
+.cld{width:10px;height:10px;border-radius:2px}
+.cr{margin-bottom:8px}
+.crk{font-size:11px;font-weight:800;color:var(--txm);margin-bottom:3px}
+.crb{display:flex;flex-direction:column;gap:3px}
+.cbw{display:flex;align-items:center;gap:6px}
+.cb{height:10px;border-radius:5px;min-width:4px;transition:width .5s ease}
+.cb.gn{background:var(--green)}.cb.or{background:var(--orl)}
+.cbv{font-size:10px;font-weight:800;color:var(--txm)}
+.rt{background:var(--card);border-radius:var(--r);overflow:hidden;box-shadow:var(--sh);margin-bottom:14px}
+.th{display:grid;grid-template-columns:24px 1fr 45px 40px 45px 56px;gap:4px;background:var(--gd);color:#fff;padding:10px 12px;font-size:10px;font-weight:800;text-transform:uppercase}
+.tr{display:grid;grid-template-columns:24px 1fr 45px 40px 45px 56px;gap:4px;padding:10px 12px;font-size:12px;font-weight:700;border-bottom:1px solid var(--bdr);align-items:center}
+.tr:last-child{border-bottom:none}.tr:nth-child(even){background:#fafafa}
+.stb{padding:3px 7px;border-radius:10px;font-size:10px;font-weight:800;text-align:center}
+.stb.lk{background:var(--gb);color:var(--green)}.stb.sb{background:var(--orb);color:var(--org)}.stb.bm{background:var(--rb);color:var(--red)}
+.er{display:flex;gap:8px}
+.pg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+.pc{background:var(--card);border:2px dashed var(--bdr);border-radius:var(--r);padding:12px;display:flex;flex-direction:column;align-items:center;box-shadow:var(--sh);gap:8px}
+.pct{font-size:9px;font-weight:800;color:var(--txm);text-transform:uppercase;letter-spacing:.5px;text-align:center}
+.pcq{width:80px;height:80px}
+.pcq canvas,.pcq img{width:80px!important;height:80px!important}
+.pck{font-size:13px;font-weight:900;text-align:center}
+.pcs{font-size:11px;font-weight:700;color:var(--txm);text-align:center}
+.mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:300;align-items:flex-end;justify-content:center}
+.mo.show{display:flex}
+.md{background:#fff;width:100%;max-width:430px;border-radius:20px 20px 0 0;padding:20px;animation:su .25s ease;max-height:90vh;overflow-y:auto}
+@keyframes su{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.mdt{font-size:18px;font-weight:900;margin-bottom:16px}
+.mdc{float:right;background:var(--bg);border:none;border-radius:50%;width:30px;height:30px;font-size:16px;cursor:pointer}
+.fg{margin-bottom:14px}
+.fl{font-size:12px;font-weight:800;color:var(--txm);text-transform:uppercase;letter-spacing:.5px;margin-bottom:6px;display:block}
+.fi{width:100%;padding:12px 14px;border:2px solid var(--bdr);border-radius:var(--rs);font-family:var(--fn);font-size:14px;font-weight:700;outline:none;transition:border .2s}
+.fi:focus{border-color:var(--green)}
+.btn{padding:12px 18px;border:none;border-radius:var(--r);font-family:var(--fn);font-size:14px;font-weight:800;cursor:pointer;transition:transform .15s;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn:active{transform:scale(.97)}
+.bfw{width:100%}
+.bgn{background:linear-gradient(135deg,var(--green),var(--gl));color:#fff;box-shadow:0 3px 10px rgba(46,125,50,.3)}
+.bbl{background:linear-gradient(135deg,var(--blue),var(--bll));color:#fff}
+.bot{background:#fff;border:2px solid var(--bdr);color:var(--tx)}
+.bsm{padding:8px 12px;font-size:12px;border-radius:var(--rs)}
+.tst{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--gd);color:#fff;padding:12px 20px;border-radius:var(--r);font-size:13px;font-weight:700;box-shadow:var(--sh2);z-index:400;transition:transform .3s ease;white-space:nowrap;max-width:90%;display:flex;align-items:center;gap:8px}
+.tst.show{transform:translateX(-50%) translateY(0)}
+.es{text-align:center;padding:40px 20px;color:var(--txm)}
+.ei{font-size:48px;margin-bottom:10px;opacity:.5}
+.et{font-size:14px;font-weight:700}
+
+/* Hidden QR canvas for PDF generation */
+#pdf-qr-tmp{position:fixed;left:-9999px;top:-9999px;width:200px;height:200px;background:#fff;padding:10px;border-radius:8px}
+
+@media print{.bnav,.fab,.pa{display:none!important}body{max-width:100%}.page{display:none!important}#page-cetak{display:block!important;padding:0}.pg{grid-template-columns:1fr 1fr;gap:20px}.pc{border:2px dashed #ccc;break-inside:avoid}}
+</style>
+</head>
+<body>
+
+<div class="page active" id="page-dashboard">
+  <div class="hdr">
+    <div class="hdr-top"><span class="hdr-ic">🍱</span><div><div class="hdr-t">DISTRIBUSI MBG</div><div class="hdr-s">SMKN DANDER — Makan Bergizi Gratis</div></div></div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px">
+      <div class="live"><div class="ldot"></div><span>REALTIME AKTIF</span><span>|</span><span id="clock">--:--</span></div>
+      <div style="font-size:11px;color:rgba(255,255,255,.7);font-weight:600" id="ddisp"></div>
+    </div>
+  </div>
+  <div class="cnt">
+    <div class="stl">Rekap Hari Ini</div>
+    <div class="sgr">
+      <div class="sc bl"><div class="sic">👥</div><div><div class="sn" id="s0">0</div><div class="sl">Total Penerima</div></div></div>
+      <div class="sc gn"><div class="sic">✅</div><div><div class="sn" id="s1">0</div><div class="sl">Sudah Ambil</div></div></div>
+      <div class="sc or"><div class="sic">⏳</div><div><div class="sn" id="s2">0</div><div class="sl">Belum Ambil</div></div></div>
+      <div class="sc rd"><div class="sic">🔄</div><div><div class="sn" id="s3">0</div><div class="sl">Dikembalikan</div></div></div>
+    </div>
+    <div class="stl">Menu Utama</div>
+    <div class="mg">
+      <button class="mb gn" onclick="showPage('page-scan');setSM('ambil')"><div class="bic">📷</div><div style="flex:1"><div class="bt">SCAN PENGAMBILAN</div><div class="bs">Catat pengambilan MBG</div></div><div class="ba">›</div></button>
+      <button class="mb bl" onclick="showPage('page-scan');setSM('kembali')"><div class="bic">🔄</div><div style="flex:1"><div class="bt">SCAN PENGEMBALIAN</div><div class="bs">Catat pengembalian wadah</div></div><div class="ba">›</div></button>
+      <button class="mb or" onclick="showPage('page-rekap')"><div class="bic">📊</div><div style="flex:1"><div class="bt">REKAP HARIAN</div><div class="bs">Lihat laporan hari ini</div></div><div class="ba">›</div></button>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-scan">
+  <div class="hdr">
+    <div class="hdr-top"><button class="hdr-bk" onclick="showPage('page-dashboard')">‹</button><div><div class="hdr-t">SCAN MBG</div><div class="hdr-s" id="sml">Mode: Pengambilan</div></div></div>
+  </div>
+  <div class="cnt">
+    <div class="tgl">
+      <button class="tb ag" id="ta" onclick="setSM('ambil')">✅ PENGAMBILAN</button>
+      <button class="tb" id="tk" onclick="setSM('kembali')">🔄 PENGEMBALIAN</button>
+    </div>
+    <div class="sbx">
+      <div class="spv">
+        <video id="sv" autoplay playsinline muted></video>
+        <canvas id="sc"></canvas>
+        <div class="sol">
+          <div class="sid" id="si"><div class="sii">📷</div><p>Tekan tombol di bawah<br>untuk mengaktifkan kamera</p></div>
+          <div style="display:none" id="sao"><div class="sfr"><span></span><div class="sln"></div></div></div>
+        </div>
+      </div>
+      <div class="ca">
+        <button class="btn bgn bfw" id="bcam" onclick="startCam()">📷 AKTIFKAN KAMERA</button>
+        <button class="btn bot bfw" id="bstp" style="display:none" onclick="stopCam()">⏹ HENTIKAN KAMERA</button>
+      </div>
+    </div>
+    <div class="ms">
+      <div class="ml">⌨️ Input Manual Kode Kelas</div>
+      <div class="mr"><input type="text" class="mi" id="mi" placeholder="Contoh: XTKR1" onkeydown="if(event.key==='Enter')doMS()"><button class="btn bgn bsm" onclick="doMS()">SCAN</button></div>
+    </div>
+    <div class="sr" id="sr">
+      <div class="rh"><div class="rk" id="rk">—</div><div class="rbg" id="rb">—</div></div>
+      <div class="ri">
+        <div class="rii"><div class="ril">Jumlah Siswa</div><div class="riv" id="rj">—</div></div>
+        <div class="rii"><div class="ril">Waktu Scan</div><div class="riv" id="rw">—</div></div>
+        <div class="rii"><div class="ril">Mode</div><div class="riv" id="rm">—</div></div>
+        <div class="rii"><div class="ril">Status</div><div class="riv" id="rs">—</div></div>
+      </div>
+      <button class="btn bgn bfw" onclick="konfirmasi()">✅ KONFIRMASI</button>
+    </div>
+    <div class="stl">Riwayat Scan</div>
+    <div class="rcs" id="rcs"><div class="es"><div class="ei">📋</div><div class="et">Belum ada data scan</div></div></div>
+  </div>
+</div>
+
+<div class="page" id="page-kelas">
+  <div class="hdr"><div class="hdr-top"><span class="hdr-ic">📚</span><div><div class="hdr-t">DATA KELAS</div><div class="hdr-s">Kelola kelas dan QR Code</div></div></div></div>
+  <div class="cnt">
+    <div class="sb"><span>🔍</span><input type="text" placeholder="Cari nama kelas..." id="sk" oninput="renderK()"></div>
+    <div id="kl"></div>
+  </div>
+  <button class="fab" onclick="openM('m1')">+</button>
+</div>
+
+<div class="page" id="page-rekap">
+  <div class="hdr">
+    <div class="hdr-top"><button class="hdr-bk" onclick="showPage('page-dashboard')">‹</button><div><div class="hdr-t">REKAP HARIAN</div><div class="hdr-s">Laporan pengambilan & pengembalian</div></div></div>
+  </div>
+  <div class="cnt">
+    <div class="dpr"><input type="date" class="di" id="rd" onchange="renderR()"><button class="btn bgn bsm" onclick="renderR()">🔍</button></div>
+    <div class="chr">
+      <div class="ch bl"><div class="chn" id="c0">0</div><div class="chl">Total</div></div>
+      <div class="ch gn"><div class="chn" id="c1">0</div><div class="chl">Diambil</div></div>
+      <div class="ch or"><div class="chn" id="c2">0</div><div class="chl">Dikembalikan</div></div>
+      <div class="ch rd"><div class="chn" id="c3">0</div><div class="chl">Sisa</div></div>
+    </div>
+    <div class="cc">
+      <div class="stl" style="margin:0 0 8px">Grafik Per Kelas</div>
+      <div class="cl"><div class="cli"><div class="cld" style="background:var(--green)"></div>Diambil</div><div class="cli"><div class="cld" style="background:var(--orl)"></div>Dikembalikan</div></div>
+      <div id="rc"></div>
+    </div>
+    <div class="rt"><div class="th"><div>#</div><div>Kelas</div><div style="text-align:center">Siswa</div><div style="text-align:center">Ambil</div><div style="text-align:center">Kembali</div><div style="text-align:center">Status</div></div><div id="rtb"></div></div>
+    <div class="er">
+      <button class="btn bgn bsm" style="flex:1" onclick="window.print()">🖨️ PDF</button>
+      <button class="btn bot bsm" style="flex:1" onclick="expCSV()">📥 CSV</button>
+      <button class="btn bot bsm" style="flex:1;color:var(--red)" onclick="resetHari()">🗑️ Reset</button>
+    </div>
+  </div>
+</div>
+
+<div class="page" id="page-cetak">
+  <div class="hdr"><div class="hdr-top"><button class="hdr-bk" onclick="showPage('page-kelas')">‹</button><div><div class="hdr-t">CETAK BARCODE</div><div class="hdr-s">QR Code semua kelas</div></div></div></div>
+  <div class="cnt">
+    <div class="pa er" style="margin-bottom:14px">
+      <button class="btn bgn bsm" style="flex:1" onclick="window.print()">🖨️ CETAK SEMUA</button>
+      <button class="btn bbl bsm" style="flex:1" onclick="showPage('page-kelas')">← KEMBALI</button>
+    </div>
+    <div class="pg" id="ppg"></div>
+  </div>
+</div>
+
+<nav class="bnav">
+  <button class="ni act" id="nd" onclick="showPage('page-dashboard')"><span class="nic">🏠</span>Dashboard</button>
+  <button class="ni" id="ns" onclick="showPage('page-scan')"><span class="nic">📷</span>Scan</button>
+  <button class="ni" id="nk" onclick="showPage('page-kelas')"><span class="nic">📚</span>Kelas</button>
+  <button class="ni" id="nr" onclick="showPage('page-rekap')"><span class="nic">📊</span>Rekap</button>
+</nav>
+
+<div class="mo" id="m1" onclick="cMO(event,'m1')">
+  <div class="md">
+    <div class="mdt">➕ Tambah Kelas <button class="mdc" onclick="closeM('m1')">✕</button></div>
+    <div class="fg"><label class="fl">Nama Kelas</label><input type="text" class="fi" id="ink" placeholder="Contoh: X TKR 1"></div>
+    <div class="fg"><label class="fl">Jumlah Penerima MBG</label><input type="number" class="fi" id="inj" placeholder="Contoh: 36" min="1"></div>
+    <button class="btn bgn bfw" onclick="tambahK()">💾 SIMPAN KELAS</button>
+  </div>
+</div>
+
+<div class="mo" id="medit" onclick="cMO(event,'medit')">
+  <div class="md">
+    <div class="mdt">✏️ Edit Kelas <button class="mdc" onclick="closeM('medit')">✕</button></div>
+    <div class="fg"><label class="fl">Nama Kelas</label><input type="text" class="fi" id="eink" placeholder="Nama kelas"></div>
+    <div class="fg"><label class="fl">Jumlah Penerima MBG</label><input type="number" class="fi" id="einj" placeholder="Jumlah siswa" min="1"></div>
+    <input type="hidden" id="eid">
+    <button class="btn bgn bfw" onclick="simpanEditK()">💾 SIMPAN PERUBAHAN</button>
+  </div>
+</div>
+
+<div class="mo" id="mconf" onclick="cMO(event,'mconf')">
+  <div class="md">
+    <div class="mdt" id="ct">Konfirmasi</div>
+    <p id="cm" style="margin-bottom:16px;color:var(--txm);font-weight:600;font-size:14px"></p>
+    <div class="er"><button class="btn bot bsm" style="flex:1" onclick="closeM('mconf')">Batal</button><button class="btn bsm" style="flex:1;background:var(--red);color:#fff" id="cok">Ya</button></div>
+  </div>
+</div>
+
+<div class="tst" id="tst">✅ Berhasil!</div>
+
+<!-- Hidden container for generating QR for PDF -->
+<div id="pdf-qr-tmp"></div>
+
+<script>
+const KK='mbg_kelas',LK='mbg_log',KV='mbg_kelas_version',DV='2026-02-26';
+const DK=[{id:'XTKR1',nama:'X TKR 1',jumlah:36},{id:'XTKR2',nama:'X TKR 2',jumlah:35},{id:'XTKR3',nama:'X TKR 3',jumlah:35},{id:'XTSM1',nama:'X TSM 1',jumlah:35},{id:'XTSM2',nama:'X TSM 2',jumlah:35},{id:'XTSM3',nama:'X TSM 3',jumlah:35},{id:'XDPIB',nama:'X DPIB',jumlah:36},{id:'XTL',nama:'X TL',jumlah:36},{id:'XDKV',nama:'X DKV',jumlah:36},{id:'XLPFKK',nama:'X LPFKK',jumlah:36},{id:'XDPB',nama:'X DPB',jumlah:36},{id:'XITKR1',nama:'XI TKR 1',jumlah:34},{id:'XITKR2',nama:'XI TKR 2',jumlah:34},{id:'XITKR3',nama:'XI TKR 3',jumlah:0},{id:'XITSM1',nama:'XI TSM 1',jumlah:35},{id:'XITSM2',nama:'XI TSM 2',jumlah:34},{id:'XITSM3',nama:'XI TSM 3',jumlah:0},{id:'XIDPIB',nama:'XI DPIB',jumlah:36},{id:'XITL',nama:'XI TL',jumlah:34},{id:'XIDKV',nama:'XI DKV',jumlah:34},{id:'XILPFKK',nama:'XI LPFKK',jumlah:31},{id:'XIDPB',nama:'XI DPB',jumlah:34},{id:'XIITKR1',nama:'XII TKR 1',jumlah:34},{id:'XIITKR2',nama:'XII TKR 2',jumlah:35},{id:'XIITKR3',nama:'XII TKR 3',jumlah:35},{id:'XIITSM1',nama:'XII TSM 1',jumlah:35},{id:'XIITSM2',nama:'XII TSM 2',jumlah:33},{id:'XIITSM3',nama:'XII TSM 3',jumlah:33},{id:'XIIDPIB',nama:'XII DPIB',jumlah:35},{id:'XIITL',nama:'XII TL',jumlah:34},{id:'XIIDKV',nama:'XII DKV',jumlah:34},{id:'XIILPFKK',nama:'XII LPFKK',jumlah:35},{id:'XIIDPB',nama:'XII DPB',jumlah:29}];
+const gK=()=>{const d=localStorage.getItem(KK);return d?JSON.parse(d):DK};
+const sK=d=>localStorage.setItem(KK,JSON.stringify(d));
+const gL=()=>{const d=localStorage.getItem(LK);return d?JSON.parse(d):[]};
+const sL=d=>localStorage.setItem(LK,JSON.stringify(d));
+const today=()=>new Date().toISOString().split('T')[0];
+const gRH=t=>{const log=gL().filter(l=>l.tanggal===t);return gK().map(k=>({...k,ambil:log.filter(l=>l.kelasId===k.id&&l.mode==='ambil').length,kembali:log.filter(l=>l.kelasId===k.id&&l.mode==='kembali').length,sisa:k.jumlah-log.filter(l=>l.kelasId===k.id&&l.mode==='ambil').length}))};
+
+let cp='page-dashboard';
+function showPage(id){
+  if(cp==='page-scan'&&id!=='page-scan')stopCam();
+  document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
+  document.getElementById(id).classList.add('active');cp=id;
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('act'));
+  if(document.getElementById('nd')&&id==='page-dashboard')document.getElementById('nd').classList.add('act');
+  if(document.getElementById('ns')&&id==='page-scan')document.getElementById('ns').classList.add('act');
+  if(document.getElementById('nk')&&(id==='page-kelas'||id==='page-cetak'))document.getElementById('nk').classList.add('act');
+  if(document.getElementById('nr')&&id==='page-rekap')document.getElementById('nr').classList.add('act');
+  if(id==='page-dashboard')updDB();
+  if(id==='page-kelas')renderK();
+  if(id==='page-rekap'){initR();renderR();}
+  if(id==='page-cetak')renderC();
+  if(id==='page-scan')renderSL();
+}
+
+function updDB(){const r=gRH(today()),tp=r.reduce((s,k)=>s+k.jumlah,0),ta=r.reduce((s,k)=>s+k.ambil,0),tk=r.reduce((s,k)=>s+k.kembali,0);document.getElementById('s0').textContent=tp;document.getElementById('s1').textContent=ta;document.getElementById('s2').textContent=tp-ta;document.getElementById('s3').textContent=tk}
+function uClock(){const n=new Date(),c=document.getElementById('clock'),d=document.getElementById('ddisp');if(c)c.textContent=n.toLocaleTimeString('id-ID');if(d)d.textContent=n.toLocaleDateString('id-ID',{weekday:'short',day:'numeric',month:'short',year:'numeric'})}
+setInterval(uClock,1000);uClock();
+
+let sm='ambil',cs=null,saf=null,ps=null;
+function setSM(m){sm=m;document.getElementById('ta').className='tb'+(m==='ambil'?' ag':'');document.getElementById('tk').className='tb'+(m==='kembali'?' ab':'');document.getElementById('sml').textContent='Mode: '+(m==='ambil'?'Pengambilan':'Pengembalian');document.getElementById('sr').classList.remove('show');ps=null}
+
+async function startCam(){
+  if(!navigator.mediaDevices||!navigator.mediaDevices.getUserMedia){showT('❌ Browser tidak mendukung kamera','rd');return}
+  if(location.protocol!=='https:'&&location.hostname!=='localhost'){showT('⚠️ Kamera butuh HTTPS! Gunakan input manual','or');return}
+  try{const s=await navigator.mediaDevices.getUserMedia({video:{facingMode:'environment'}});cs=s;const v=document.getElementById('sv');v.srcObject=s;document.getElementById('si').style.display='none';document.getElementById('sao').style.display='flex';document.getElementById('bcam').style.display='none';document.getElementById('bstp').style.display='';scanLoop();showT('📷 Kamera aktif!','gn')}
+  catch(e){let m='❌ Kamera error.';if(e.name==='NotAllowedError')m='❌ Izin ditolak. Gunakan input manual.';else if(e.name==='NotFoundError')m='❌ Kamera tidak ditemukan.';showT(m,'rd')}
+}
+function stopCam(){if(cs){cs.getTracks().forEach(t=>t.stop());cs=null}if(saf){cancelAnimationFrame(saf);saf=null}const v=document.getElementById('sv');v.srcObject=null;document.getElementById('si').style.display='flex';document.getElementById('sao').style.display='none';document.getElementById('bcam').style.display='';document.getElementById('bstp').style.display='none'}
+function scanLoop(){const v=document.getElementById('sv'),c=document.getElementById('sc'),ctx=c.getContext('2d');function tick(){if(v.readyState===v.HAVE_ENOUGH_DATA){c.width=v.videoWidth;c.height=v.videoHeight;ctx.drawImage(v,0,0,c.width,c.height);const img=ctx.getImageData(0,0,c.width,c.height);const code=jsQR(img.data,img.width,img.height,{inversionAttempts:'dontInvert'});if(code&&code.data){procScan(code.data.toUpperCase().replace(/\s/g,''));return}}saf=requestAnimationFrame(tick)}tick()}
+function doMS(){const v=document.getElementById('mi').value.trim().toUpperCase().replace(/\s/g,'');if(!v){showT('⚠️ Masukkan kode kelas!','or');return}procScan(v);document.getElementById('mi').value=''}
+function procScan(kode){stopCam();const kelas=gK();const f=kelas.find(k=>k.id.toUpperCase()===kode||k.nama.toUpperCase().replace(/\s/g,'')===kode);const n=new Date(),w=n.toLocaleTimeString('id-ID'),t=today();if(f){const sudahAda=gL().some(l=>l.kelasId===f.id&&l.mode===sm&&l.tanggal===t),v=!sudahAda;document.getElementById('rk').textContent=f.nama;document.getElementById('rj').textContent=f.jumlah+' Siswa';document.getElementById('rw').textContent=w;document.getElementById('rm').textContent=sm==='ambil'?'Pengambilan':'Pengembalian';document.getElementById('rs').textContent=v?'Valid ✅':'Sudah Tercatat ⚠️';const b=document.getElementById('rb');b.className='rbg '+(v?'gn':'rd');b.textContent=v?'BERHASIL':'DUPLIKAT';document.getElementById('sr').classList.add('show');ps=v?{kelasId:f.id,kelasNama:f.nama,mode:sm,waktu:w,tanggal:t,timestamp:n.toISOString()}:null;showT(v?'✅ Kelas: '+f.nama:'⚠️ Sudah di-scan hari ini',v?'gn':'or')}else{document.getElementById('rk').textContent=kode;document.getElementById('rj').textContent='—';document.getElementById('rw').textContent=w;document.getElementById('rm').textContent='—';document.getElementById('rs').textContent='Tidak Ditemukan ❌';const b=document.getElementById('rb');b.className='rbg rd';b.textContent='TIDAK VALID';document.getElementById('sr').classList.add('show');ps=null;showT('❌ Kode tidak ditemukan','rd')}}
+function konfirmasi(){if(!ps){showT('⚠️ Tidak ada data valid','or');return}const l=gL();l.push(ps);sL(l);document.getElementById('sr').classList.remove('show');ps=null;renderSL();updDB();showT('💾 Data berhasil disimpan!','gn')}
+function renderSL(){const t=today(),l=gL().filter(x=>x.tanggal===t).reverse().slice(0,7);const e=document.getElementById('rcs');if(!l.length){e.innerHTML='<div class="es"><div class="ei">📋</div><div class="et">Belum ada data scan hari ini</div></div>';return}e.innerHTML='<div class="rch">Riwayat Hari Ini</div>'+l.map(x=>`<div class="sli"><div class="ld ${x.mode==='ambil'?'gn':'bl'}"></div><div class="lif"><div class="lk">${x.kelasNama}</div><div class="lm">${x.mode==='ambil'?'✅ Pengambilan':'🔄 Pengembalian'}</div></div><div class="lt">${x.waktu}</div></div>`).join('')}
+
+// ─── SAVE PDF PER KELAS ────────────────────────────────────────────────────
+function generateQRDataURL(text,size){
+  return new Promise(resolve=>{
+    const tmp=document.createElement('div');
+    tmp.style.cssText=`position:fixed;left:-9999px;top:-9999px;width:${size}px;height:${size}px;background:#fff;`;
+    document.body.appendChild(tmp);
+    try{
+      new QRCode(tmp,{text,width:size,height:size,correctLevel:QRCode.CorrectLevel.H});
+      setTimeout(()=>{
+        const canvas=tmp.querySelector('canvas');
+        const img=tmp.querySelector('img');
+        let dataURL='';
+        if(canvas)dataURL=canvas.toDataURL('image/png');
+        else if(img)dataURL=img.src;
+        document.body.removeChild(tmp);
+        resolve(dataURL);
+      },300);
+    }catch(e){
+      document.body.removeChild(tmp);
+      resolve('');
+    }
+  });
+}
+
+async function savePDFKelas(id,nama,jumlah,btnEl){
+  if(typeof jspdf==='undefined'&&typeof window.jspdf==='undefined'){
+    showT('❌ Library PDF belum termuat','rd');return;
+  }
+  if(btnEl){btnEl.classList.add('loading');btnEl.textContent='⏳';}
+  showT('⏳ Membuat PDF...','gn');
+
+  try{
+    const qrDataURL=await generateQRDataURL(id,200);
+    const {jsPDF}=window.jspdf;
+    const doc=new jsPDF({orientation:'portrait',unit:'mm',format:'a6'});
+
+    // Card background
+    doc.setFillColor(232,245,233);
+    doc.roundedRect(5,5,95,134,4,4,'F');
+
+    // Header bar
+    doc.setFillColor(27,94,32);
+    doc.roundedRect(5,5,95,22,4,4,'F');
+    doc.setFillColor(27,94,32);
+    doc.rect(5,17,95,10,'F');
+
+    // Header text
+    doc.setTextColor(255,255,255);
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(10);
+    doc.text('KARTU MBG SMK',52.5,13,{align:'center'});
+    doc.setFontSize(7);
+    doc.text('Makan Bergizi Gratis — 2024/2025',52.5,20,{align:'center'});
+
+    // White card area
+    doc.setFillColor(255,255,255);
+    doc.roundedRect(10,31,85,90,3,3,'F');
+
+    // QR Code
+    if(qrDataURL){
+      doc.addImage(qrDataURL,'PNG',26,35,53,53);
+    }
+
+    // Class name
+    doc.setTextColor(27,94,32);
+    doc.setFont('helvetica','bold');
+    doc.setFontSize(16);
+    doc.text(nama,52.5,96,{align:'center'});
+
+    // Divider
+    doc.setDrawColor(212,232,212);
+    doc.setLineWidth(0.4);
+    doc.line(15,100,90,100);
+
+    // Info rows
+    doc.setFontSize(8);
+    doc.setTextColor(107,124,107);
+    doc.setFont('helvetica','normal');
+    doc.text('Kode QR',15,107);
+    doc.text('Penerima MBG',15,114);
+
+    doc.setFont('helvetica','bold');
+    doc.setTextColor(26,46,26);
+    doc.text(id,90,107,{align:'right'});
+    doc.text(jumlah+' Siswa',90,114,{align:'right'});
+
+    // Footer
+    doc.setFillColor(46,125,50);
+    doc.roundedRect(5,128,95,11,0,0,'F');
+    doc.setFillColor(46,125,50);
+    doc.rect(5,128,95,6,'F');
+    doc.setTextColor(255,255,255);
+    doc.setFont('helvetica','normal');
+    doc.setFontSize(6.5);
+    doc.text('Tunjukkan kartu ini saat pengambilan & pengembalian MBG',52.5,135,{align:'center'});
+
+    doc.save('QR-MBG-'+id+'.pdf');
+    showT('✅ PDF '+nama+' berhasil diunduh!','gn');
+  }catch(err){
+    console.error(err);
+    showT('❌ Gagal membuat PDF','rd');
+  }finally{
+    if(btnEl){btnEl.classList.remove('loading');btnEl.innerHTML='📄 PDF';}
+  }
+}
+// ──────────────────────────────────────────────────────────────────────────
+
+function renderK(){const kelas=gK(),sq=(document.getElementById('sk')||{value:''}).value.toLowerCase(),t=today(),rek=gRH(t),e=document.getElementById('kl'),fl=kelas.filter(k=>k.nama.toLowerCase().includes(sq));if(!fl.length){e.innerHTML='<div class="es"><div class="ei">📚</div><div class="et">Kelas tidak ditemukan</div></div>';return}e.innerHTML=fl.map(k=>{const r=rek.find(x=>x.id===k.id)||{ambil:0,kembali:0};const pct=Math.round(r.ambil/k.jumlah*100),s=k.jumlah-r.ambil;return`<div class="kc"><div class="kct"><div class="kch"><div><div class="kn">${k.nama}</div><div class="ks">👥 ${k.jumlah} Penerima MBG</div></div><div class="kqr" id="kq-${k.id}"></div></div><div class="pr"><div class="pb"><div class="pf" style="width:${pct}%"></div></div><div class="pp">${pct}%</div></div><div class="kss"><div class="kst gn"><div class="ksn">${r.ambil}</div><div class="ksl">Diambil</div></div><div class="kst or"><div class="ksn">${r.kembali}</div><div class="ksl">Dikembalikan</div></div><div class="kst rd"><div class="ksn">${s}</div><div class="ksl">Sisa</div></div></div></div><div class="kca"><button class="kab pr2" onclick="showPage('page-cetak')">🖨️ Cetak</button><button class="kab sv" id="pdfbtn-${k.id}" onclick="savePDFKelas('${k.id}','${k.nama}',${k.jumlah},this)">📄 PDF</button><button class="kab ed" onclick="openEditK('${k.id}','${k.nama}',${k.jumlah})">✏️ Edit</button><button class="kab rs" onclick="resetK('${k.id}','${k.nama}')">🔄 Reset</button><button class="kab dl" onclick="delK('${k.id}','${k.nama}')">🗑️ Hapus</button></div></div>`}).join('');fl.forEach(k=>{const e=document.getElementById('kq-'+k.id);if(e&&!e.children.length)try{new QRCode(e,{text:k.id,width:60,height:60,correctLevel:QRCode.CorrectLevel.M})}catch(ex){}})}
+
+function tambahK(){const n=document.getElementById('ink').value.trim(),j=parseInt(document.getElementById('inj').value);if(!n){showT('⚠️ Nama kelas wajib diisi','or');return}if(!j||j<1){showT('⚠️ Jumlah tidak valid','or');return}const kelas=gK(),id=n.toUpperCase().replace(/\s/g,'').replace(/[^A-Z0-9]/g,'');if(kelas.find(k=>k.id===id)){showT('⚠️ Kelas sudah ada','or');return}kelas.push({id,nama:n,jumlah:j});sK(kelas);closeM('m1');document.getElementById('ink').value='';document.getElementById('inj').value='';renderK();showT('✅ Kelas '+n+' ditambahkan!','gn')}
+function resetK(id,n){showConf('Reset Data','Reset data scan hari ini untuk kelas "'+n+'"?',()=>{const t=today(),l=gL().filter(x=>!(x.kelasId===id&&x.tanggal===t));sL(l);renderK();updDB();showT('🔄 Data '+n+' direset','gn')})}
+function openEditK(id,nama,jumlah){document.getElementById('eid').value=id;document.getElementById('eink').value=nama;document.getElementById('einj').value=jumlah;openM('medit')}
+function simpanEditK(){const id=document.getElementById('eid').value,nama=document.getElementById('eink').value.trim(),jumlah=parseInt(document.getElementById('einj').value);if(!nama){showT('⚠️ Nama kelas wajib diisi','or');return}if(!jumlah||jumlah<0){showT('⚠️ Jumlah tidak valid','or');return}const kelas=gK(),idx=kelas.findIndex(k=>k.id===id);if(idx<0){showT('❌ Kelas tidak ditemukan','rd');return}kelas[idx].nama=nama;kelas[idx].jumlah=jumlah;sK(kelas);closeM('medit');renderK();updDB();showT('✅ Kelas '+nama+' diperbarui!','gn')}
+function delK(id,n){showConf('Hapus Kelas','Hapus kelas "'+n+'" beserta semua datanya?',()=>{sK(gK().filter(k=>k.id!==id));sL(gL().filter(l=>l.kelasId!==id));renderK();updDB();showT('🗑️ Kelas '+n+' dihapus','gn')})}
+
+function initR(){const d=document.getElementById('rd');if(!d.value)d.value=today()}
+function renderR(){const t=document.getElementById('rd').value||today(),rek=gRH(t),ms=Math.max(...rek.map(k=>k.jumlah),1),tot=rek.reduce((s,k)=>s+k.jumlah,0),ta=rek.reduce((s,k)=>s+k.ambil,0),tk=rek.reduce((s,k)=>s+k.kembali,0);document.getElementById('c0').textContent=tot;document.getElementById('c1').textContent=ta;document.getElementById('c2').textContent=tk;document.getElementById('c3').textContent=tot-ta;document.getElementById('rc').innerHTML=rek.map(k=>`<div class="cr"><div class="crk">${k.nama}</div><div class="crb"><div class="cbw"><div class="cb gn" style="width:${Math.round(k.ambil/ms*100)}%"></div><div class="cbv">${k.ambil}</div></div><div class="cbw"><div class="cb or" style="width:${Math.round(k.kembali/ms*100)}%"></div><div class="cbv">${k.kembali}</div></div></div></div>`).join('');document.getElementById('rtb').innerHTML=rek.map((k,i)=>{const st=k.ambil===0?['Belum','bm']:k.ambil>=k.jumlah?['Lengkap','lk']:['Sebagian','sb'];return`<div class="tr"><div>${i+1}</div><div style="font-weight:800;font-size:11px">${k.nama}</div><div style="text-align:center">${k.jumlah}</div><div style="text-align:center;color:var(--green);font-weight:800">${k.ambil}</div><div style="text-align:center;color:var(--org);font-weight:800">${k.kembali}</div><div style="text-align:center"><span class="stb ${st[1]}">${st[0]}</span></div></div>`}).join('')}
+function resetHari(){showConf('Reset Semua','Reset SEMUA data scan hari ini?',()=>{sL(gL().filter(l=>l.tanggal!==today()));renderR();updDB();showT('🗑️ Data hari ini direset','gn')})}
+function expCSV(){const t=document.getElementById('rd').value||today(),rek=gRH(t);let csv='No,Kelas,Jumlah,Diambil,Dikembalikan,Sisa,Status\n';rek.forEach((k,i)=>{const st=k.ambil===0?'Belum':k.ambil>=k.jumlah?'Lengkap':'Sebagian';csv+=`${i+1},"${k.nama}",${k.jumlah},${k.ambil},${k.kembali},${k.sisa},${st}\n`});const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([csv],{type:'text/csv'}));a.download=`rekap-mbg-${t}.csv`;a.click();showT('📥 CSV diunduh!','gn')}
+
+function renderC(){const kelas=gK();document.getElementById('ppg').innerHTML=kelas.map(k=>`<div class="pc"><div class="pct">🍱 KARTU MBG 2024/2025</div><div class="pcq" id="pq-${k.id}"></div><div class="pck">${k.nama}</div><div class="pcs">👥 Jumlah: ${k.jumlah} Siswa</div></div>`).join('');setTimeout(()=>kelas.forEach(k=>{const e=document.getElementById('pq-'+k.id);if(e&&!e.children.length)try{new QRCode(e,{text:k.id,width:80,height:80,correctLevel:QRCode.CorrectLevel.M})}catch(ex){}}),150)}
+
+const openM=id=>document.getElementById(id).classList.add('show');
+const closeM=id=>document.getElementById(id).classList.remove('show');
+const cMO=(e,id)=>{if(e.target.id===id)closeM(id)};
+function showConf(t,m,fn){document.getElementById('ct').textContent=t;document.getElementById('cm').textContent=m;document.getElementById('cok').onclick=()=>{closeM('mconf');fn()};openM('mconf')}
+
+let tt;
+function showT(msg,type='gn'){const t=document.getElementById('tst');t.textContent=msg;t.style.background=type==='rd'?'var(--rl)':type==='or'?'var(--org)':'var(--gd)';t.classList.add('show');clearTimeout(tt);tt=setTimeout(()=>t.classList.remove('show'),2800)}
+
+function initData(){const v=localStorage.getItem(KV);if(v!==DV||!localStorage.getItem(KK)){sK(DK);localStorage.setItem(KV,DV)}}
+
+initData();
+updDB();
+</script>
+</body>
+</html>
