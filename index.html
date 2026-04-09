@@ -644,7 +644,7 @@ async function savePDFKelas(id,nama,jumlah,btnEl){
     doc.setFillColor(27,94,32);doc.rect(5,17,95,10,'F');
     doc.setTextColor(255,255,255);doc.setFont('helvetica','bold');doc.setFontSize(10);
     doc.text('KARTU MBG SMK',52.5,13,{align:'center'});
-    doc.setFontSize(7);doc.text('Makan Bergizi Gratis — 2024/2025',52.5,20,{align:'center'});
+    doc.setFontSize(7);doc.text('Makan Bergizi Gratis — 2025/ 2026',52.5,20,{align:'center'});
     doc.setFillColor(255,255,255);doc.roundedRect(10,31,85,90,3,3,'F');
     if(qrDataURL)doc.addImage(qrDataURL,'PNG',26,35,53,53);
     doc.setTextColor(27,94,32);doc.setFont('helvetica','bold');doc.setFontSize(16);
@@ -829,7 +829,7 @@ function renderC(){
   const kelas=gK();
   document.getElementById('ppg').innerHTML=kelas.map(k=>`
     <div class="pc">
-      <div class="pct">🍱 KARTU MBG 2024/2025</div>
+      <div class="pct">🍱 KARTU MBG 2025/2026</div>
       <div class="pcq" id="pq-${k.id}"></div>
       <div class="pck">${k.nama}</div>
       <div class="pcs">👥 ${k.jumlah} Siswa</div>
